@@ -9,173 +9,169 @@ struct Node
     Node* right;
 };
 //1
-Node * createNode(int data)
+Node* createNode(int data)
 {
-    Node*p= new Node;
-    p->key=data;
-    p->left=NULL;
-    p->right= NULL;
-    return p;
+    Node* k = new Node;
+    k->key= data;
+    k->left = k->right = NULL;
+    return k;
 }
 //2
-void Insert(Node* &pRoot, int x)
+void Insert(Node* &root, int x)
 {
-    if (pRoot == NULL)
+    if(root == NULL)
     {
-        pRoot = createNode(x);
-        return;
+        root = createNode(x);
+        return ;
     }
-    if (pRoot->key == x )
+    if(root->key == x)
     {
-        return;
+        return ;
     }
-    if(pRoot->key > x)
+    if(root->key > x)
     {
-        Insert(pRoot->left,x);
-            return;
+        Insert(root->right,x);
+        return ;
     }
-    if(pRoot->key < x)
+    if(root->key < x)
     {
-        Insert(pRoot->right , x);
+        Insert(root->left,x);
         return ;
     }
 }
 //3
-void NLR(Node* pRoot)
+void NLR(Node* root)
 {
-    if(pRoot == NULL)
+    if(root == NULL)
         return;
-    cout<< pRoot->key;
-    NLR(pRoot->left);
-    NLR(pRoot->right);
+    cout<<root->key;
+    NLR(root->left);
+    NLR(root->right);
 }
 //4
-void LNR(Node* pRoot)
+void LNR(Node* root)
 {
-    if (pRoot == NULL)
-        return;
-    LNR(pRoot->left);
-    cout<<pRoot->key;
-    LNR(pRoot->right);
+    if(root == NULL)
+        return ;
+    LNR(root->left);
+    cout<<root->key;
+    LNR(root->right);
 }
 //5
-void LRN(Node* pRoot)
+void LRN(Node* root)
 {
-    if (pRoot == NULL)
-        return;
-    LNR(pRoot->left);
-    LNR(pRoot->right);
-    cout<<pRoot->key;
+    if(root == NULL)
+        return ;
+    LNR(root->left);
+    LNR(root->right);
+    cout<<root->key;
 }
-//6
-void LevelOrder(Node* pRoot )
+//6 
+void LevelOrder(Node* root)
 {
-    if(pRoot == NULL)
-    return ;
+    if (root == NULL)
+        return;
     queue<Node*> q;
-    q.push(pRoot);
-    while (!q.empty() )
+    q.push(root);
+    while(!q.empty())
     {
-        Node* temp = q.front();
+        Node* p = q.front();
+        cout << p->key << " ";
+        if(p->left != NULL)
+        {
+            q.push(p->left);
+        }
+        if(p->right != NULL)
+        {
+            q.push(p->right);
+        }
         q.pop();
-        if(temp->left != NULL)
-        {
-            q.push(temp->left);
-        }
-        if(temp->right != NULL)
-        {
-            q.push(temp->right);
-        }
-        cout<< temp->key;
     }
 }
 //7
-int Height(Node * pRoot)
+int Height(Node * root)
 {
-    if(pRoot == NULL)
+    if(root == NULL)
         return 0;
-    return max(Height(pRoot->left),Height(pRoot->right)) + 1;
+    return max(Height(root->left),Height(root->right)) + 1;
 }
 //8
-int countNode(Node* pRoot)
+int countNode(Node* root)
 {
-    if(pRoot == NULL)
+    if(root == NULL)
         return 0;
-    return countNode(pRoot->left) + countNode(pRoot->right) + 1;
+    return countNode(root->left) + countNode(root->right) + 1;
 }
 //9
-int sumNode(Node* pRoot)
+int sumNode(Node* root)
 {
-    if(pRoot == NULL)
-    return 0;
-    return countNode(pRoot->left) + countNode(pRoot->right) + pRoot->key;
+    if(root == NULL)
+        return 0;
+    return sumNode(root->left) + sumNode(root->right) + root->key;
 }
 //10
-Node* Search(Node* pRoot , int x)
+Node* Search(Node* root , int x)
 {
-    if(pRoot == NULL)
+    if(root == NULL)
         return NULL;
-    if(pRoot->key == x)
+    if(root->key > x)
     {
-        return pRoot;
+        return Search(root->left,x);
     }
-    if(pRoot->key > x)
+    if(root->key<x)
     {
-        return Search(pRoot->left,x);
+        return Search(root->right,x);
     }
-    if(pRoot->key<x)
-    {
-        return Search(pRoot->right,x);
-    }
+    return root;
 }
 //11
-void Remove(Node* &pRoot, int x)
+void Remove(Node* &root, int x)
 {
-    if(pRoot == NULL)
+    if(root == NULL)
     {
         return;
     }
-    if(pRoot->key>x)
-        Remove(pRoot->left,x);
-    if (pRoot->key < x)
+    if(root->key>x)
+        Remove(root->left,x);
+    if (root->key < x)
     {
-        Remove(pRoot->right,x);
+        Remove(root->right,x);
     }
-    if(pRoot->key == x)
+    if(root->key == x)
     {
-        if(pRoot->left == NULL && pRoot->right == NULL)
+        if(root->left == NULL && root->right == NULL)
         {
-            // Trường hợp node có 0 con
-            delete pRoot;
-            pRoot = NULL;
+            // Trường hợp Node có 0 con
+            delete root;
+            root = NULL;
             return;
         }
-        if(pRoot->left != NULL && pRoot->right == NULL)
+        if(root->left != NULL && root->right == NULL)
         {
-            // Trường hợp node chỉ có con bên trái
-           Node* temp = pRoot;
-           pRoot = pRoot->left;
+            // Trường hợp Node chỉ có con bên trái
+           Node* temp = root;
+           root = root->left;
            delete temp;
            return;
         }
-        if(pRoot->left == NULL && pRoot->right != NULL)
+        if(root->left == NULL && root->right != NULL)
         {
-            // Trường hợp node chỉ có con bên phải
-            Node* temp = pRoot;
-            pRoot = pRoot->right;
+            // Trường hợp Node chỉ có con bên phải
+            Node* temp = root;
+            root = root->right;
             delete temp;
             return;
         }
-        if(pRoot->left != NULL && pRoot->right != NULL)
+        if(root->left != NULL && root->right != NULL)
         {
-            // Trường hợp node có 2 con
-            Node* p =pRoot->right;
+            // Trường hợp Node có 2 con
+            Node* p =root->right;
             while (p->left !=NULL)
             {
-                p=p->left;// Tìm node trái nhất của con cây bên phải
+                p=p->left;// Tìm Node trái nhất của con cây bên phải
             }
-            pRoot->key = p->key;
-            Remove(pRoot->right,pRoot->key);
+            root->key = p->key;
+            Remove(root->right,root->key);
             return;
         }
     }
@@ -184,49 +180,48 @@ void Remove(Node* &pRoot, int x)
 //12
 Node* createTree(int a[],int n)
 {
-    Node* pRoot = NULL;
+    Node* root = NULL;
     for (int  i = 0; i < n; i++)
     {
-        Insert(pRoot,a[i]);
+        Insert(root,a[i]);
     }
-    return pRoot;
+    return root;
 }
 //13
-void RemoveTree(Node* &pRoot)
+void RemoveTree(Node* &root)
 {
-    if(pRoot == NULL)
+    if(root == NULL)
     {
         return;
     }
-    while (pRoot != NULL)
+    while (root != NULL)
     {
-        Remove(pRoot,pRoot->key);
+        Remove(root,root->key);
     }
 }
 //14
-int heightNode(Node* pRoot, int val)
+int heightNode(Node* root, int val)
 {
-    if(pRoot == NULL)
+    if(root == NULL)
     {
-        return;
+        return 0;
     }
-    if(pRoot->key > val)
-        return heightNode(pRoot->left,val);
-    if(pRoot->key < val)
-        return heightNode(pRoot->right,val);
-    if(pRoot->key == val)
-        return Height(pRoot);
+    if(root->key > val)
+        return heightNode(root->left,val);
+    if(root->key < val)
+        return heightNode(root->right,val);
+    return Height(root);
 }
 //15
-int Level(Node* pRoot,Node* p)
+int Level(Node* root,Node* p)
 {
-    if(pRoot == NULL)
+    if(root == NULL)
     {
         return 0;
     }
    queue<Node*> q1;
    queue<int> q2;
-   q1.push(pRoot);
+   q1.push(root);
    q2.push(1);
    while (!q1.empty())
    {
@@ -252,93 +247,101 @@ int Level(Node* pRoot,Node* p)
    return 0;
 }
 //16
-int countLeaf(Node* pRoot)
+int countLeaf(Node* root)
 {
-    if(pRoot == NULL)
+    if(root == NULL)
     {
-        return;
+        return 0;
     }
-    if(pRoot->left == NULL && pRoot->right == NULL)
+    if(root->left == NULL && root->right == NULL)
     {
         return 1;
     }
-    return countLeaf(pRoot->left) + countLeaf(pRoot->right);
+    return countLeaf(root->left) + countLeaf(root->right);
 }
 //17
-int countLess(Node* pRoot,int x)
+int countLess(Node* root, int x)
 {
-    if(pRoot == NULL)
+    if (root == NULL)
+        return 0;
+    if (root->key > x)
     {
-        return;
+        return countLess(root->left, x);
     }
-    if(pRoot->key == x)
-        return countNode(pRoot->left);
-    if(pRoot->key < x)
+    if (root->key == x)
     {
-        return countNode(pRoot->left)+1+countLess(pRoot->right,x);
+        return countNode(root->left);
     }
-    if(pRoot->key > x)
-    {
-        return countLess(pRoot->left,x);
-    }
+    return countLess(root->right, x) + countNode(root->left) + 1;
 }
 //18
-int countGreater(Node* pRoot,int x)
+int countGreater(Node* root, int x)
 {
-    if(pRoot == NULL)
+    if (root == NULL)
+        return 0;
+    if (root->key < x)
     {
-        return;
+        return countLess(root->right, x);
     }
-    if(pRoot->key == x)
-        return countNode(pRoot->right);
-    if(pRoot->key < x)
+    if (root->key == x)
     {
-        return countNode(pRoot->right)+1+countLess(pRoot->left,x);
+        return countNode(root->right);
     }
-    if(pRoot->key > x)
-    {
-        return countGreater(pRoot->right,x);
-    }
+    return countLess(root->left, x) + countNode(root->right) + 1;
 }
 //19 
-int minNode(Node* pRoot)
+int minNode(Node* root)
 {
-    if(pRoot == NULL)
+    if(root == NULL)
         return 1000000;
-    return min(pRoot->key,min(minNode(pRoot->left),minNode(pRoot->right)));
+    return min(root->key,min(minNode(root->left),minNode(root->right)));
 }
-int maxNode(Node* pRoot)
+int maxNode(Node* root)
 {
-    if(pRoot == NULL)
+    if(root == NULL)
         return -1000000;
-    return max(pRoot->key,max(maxNode(pRoot->left),maxNode(pRoot->right)));
+    return max(root->key,max(maxNode(root->left),maxNode(root->right)));
 }
-bool isBST(Node* pRoot)
+bool isBST(Node* root)
 {
-    if(pRoot == NULL)
+    if(root == NULL)
     {
         return true;
     }
-    if(pRoot->key > minNode(pRoot->right) && pRoot->key > maxNode(pRoot->left))
+    if(root->key > minNode(root->right) && root->key > maxNode(root->left))
     {
-        return isBST(pRoot->left) && isBST(pRoot->right);
+        return isBST(root->left) && isBST(root->right);
     }
     return false;
 }
 //20
-bool isFULLBST(Node* pRoot)
+bool isFULLBST(Node* root)
 {
-    if(pRoot == NULL)
+    if(root == NULL)
         return true;
-    if(pRoot->left == NULL && pRoot->right == NULL)
+    if(root->left == NULL && root->right == NULL)
         return false;
-    if(pRoot->left != NULL && pRoot->right != NULL)
+    if(root->left != NULL && root->right != NULL)
     {
-        return isBST(pRoot) && isFULLBST(pRoot->left) && isFULLBST(pRoot->right);
+        return isBST(root) && isFULLBST(root->left) && isFULLBST(root->right);
     }
     return false;
 }
-int main()
+
+int main(int argc,char* argv[])
 {
+    int a[20];
+    for (int i = 0; i < argc - 2; i++)
+    {
+        a[i] = stoi(argv[2 + i]);
+        cout<<a[i]<<" ";
+    }
+    cout<<endl;
+    Node* root = NULL;
+    root = createTree(a, argc-2);
+    LevelOrder(root);
+    cout << endl;
+    //Remove(root, findMax(root));
+    LevelOrder(root);
     return 0;
 }
